@@ -1,11 +1,14 @@
 # Frontend API Documentation
 
-Base URL: `http://127.0.0.1:8090`
+Base URL: `https://pocketbase-backend.up.railway.app`
 
 All authenticated requests must include:
 `Authorization: Bearer <JWT>`
 
 ## Auth
+
+### Field options
+- `role`: `client | freelancer`
 
 ### Sign up
 POST `/api/collections/users/records`
@@ -49,6 +52,10 @@ Response
 
 ## Projects
 
+### Field options
+- `type`: `remote | onsite | hybrid`
+- `status`: `open | in_progress | closed`
+
 ### List projects
 GET `/api/collections/projects/records`
 
@@ -82,6 +89,9 @@ Request
 ```
 
 ## Proposals
+
+### Field options
+- `status`: `sent | accepted | rejected`
 
 ### List proposals
 GET `/api/collections/proposals/records`
