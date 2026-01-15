@@ -1,0 +1,309 @@
+[
+  {
+    "id": "_pb_users_auth_",
+    "name": "users",
+    "type": "auth",
+    "system": false,
+    "schema": [
+      {
+        "id": "namefld8s9v1k2m3",
+        "name": "name",
+        "type": "text",
+        "required": true,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "rolefld8s9v1k2m3",
+        "name": "role",
+        "type": "select",
+        "required": true,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "client",
+            "freelancer"
+          ]
+        }
+      },
+      {
+        "id": "delfld8s9v1k2m3",
+        "name": "is_deleted",
+        "type": "bool",
+        "required": false,
+        "unique": false,
+        "options": {}
+      }
+    ],
+    "indexes": [],
+    "listRule": "@request.auth.id = id && is_deleted = false",
+    "viewRule": "@request.auth.id = id && is_deleted = false",
+    "createRule": null,
+    "updateRule": "@request.auth.id = id && is_deleted = false",
+    "deleteRule": null,
+    "options": {
+      "allowEmailAuth": true,
+      "allowOAuth2Auth": true,
+      "allowUsernameAuth": true,
+      "minPasswordLength": 8,
+      "onlyVerified": false,
+      "requireEmail": false
+    },
+    "authRule": "is_deleted = false",
+    "manageRule": null
+  },
+  {
+    "id": "projct8s9v1k2m3n",
+    "name": "projects",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "titlefld8s9v1k2m",
+        "name": "title",
+        "type": "text",
+        "required": true,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "descfld8s9v1k2m",
+        "name": "description",
+        "type": "text",
+        "required": true,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "typefld8s9v1k2m",
+        "name": "type",
+        "type": "select",
+        "required": true,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "remote",
+            "onsite",
+            "hybrid"
+          ]
+        }
+      },
+      {
+        "id": "clientfld8s9v1k",
+        "name": "client_id",
+        "type": "relation",
+        "required": true,
+        "unique": false,
+        "options": {
+          "collectionId": "_pb_users_auth_",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "id": "statusfld8s9v1k",
+        "name": "status",
+        "type": "select",
+        "required": true,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "open",
+            "in_progress",
+            "closed"
+          ]
+        }
+      },
+      {
+        "id": "pdelfld8s9v1k",
+        "name": "is_deleted",
+        "type": "bool",
+        "required": false,
+        "unique": false,
+        "options": {}
+      }
+    ],
+    "indexes": [],
+    "listRule": "is_deleted = false && @request.auth.id != '' && ((@request.auth.role = 'client' && client_id = @request.auth.id) || (@request.auth.role = 'freelancer' && status = 'open'))",
+    "viewRule": "is_deleted = false && @request.auth.id != '' && ((@request.auth.role = 'client' && client_id = @request.auth.id) || (@request.auth.role = 'freelancer' && status = 'open'))",
+    "createRule": "@request.auth.role = 'client' && @request.auth.is_deleted = false",
+    "updateRule": "is_deleted = false && @request.auth.role = 'client' && client_id = @request.auth.id",
+    "deleteRule": "false",
+    "options": {}
+  },
+  {
+    "id": "proposl8s9v1k2m3",
+    "name": "proposals",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "projfld8s9v1k2m",
+        "name": "project_id",
+        "type": "relation",
+        "required": true,
+        "unique": false,
+        "options": {
+          "collectionId": "projct8s9v1k2m3n",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "id": "freefld8s9v1k2m",
+        "name": "freelancer_id",
+        "type": "relation",
+        "required": true,
+        "unique": false,
+        "options": {
+          "collectionId": "_pb_users_auth_",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "id": "clifld8s9v1k2m",
+        "name": "client_id",
+        "type": "relation",
+        "required": true,
+        "unique": false,
+        "options": {
+          "collectionId": "_pb_users_auth_",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "id": "msgfld8s9v1k2m",
+        "name": "message",
+        "type": "text",
+        "required": true,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "statfld8s9v1k2m",
+        "name": "status",
+        "type": "select",
+        "required": true,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "sent",
+            "accepted",
+            "rejected"
+          ]
+        }
+      },
+      {
+        "id": "pdelfld8s9v1k2m",
+        "name": "is_deleted",
+        "type": "bool",
+        "required": false,
+        "unique": false,
+        "options": {}
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX idx_proposals_project_freelancer ON proposals (project_id, freelancer_id)"
+    ],
+    "listRule": "is_deleted = false && @request.auth.id != '' && (client_id = @request.auth.id || freelancer_id = @request.auth.id)",
+    "viewRule": "is_deleted = false && @request.auth.id != '' && (client_id = @request.auth.id || freelancer_id = @request.auth.id)",
+    "createRule": "@request.auth.role = 'freelancer' && @request.auth.is_deleted = false && @request.data.project_id.status = 'open' && @request.data.project_id.is_deleted = false",
+    "updateRule": "is_deleted = false && ((@request.auth.role = 'freelancer' && freelancer_id = @request.auth.id && status = 'sent') || (@request.auth.role = 'client' && client_id = @request.auth.id))",
+    "deleteRule": "false",
+    "options": {}
+  },
+  {
+    "id": "conver8s9v1k2m3n",
+    "name": "conversations",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "cprojfld8s9v1k2",
+        "name": "project_id",
+        "type": "relation",
+        "required": true,
+        "unique": false,
+        "options": {
+          "collectionId": "projct8s9v1k2m3n",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "id": "cpropfld8s9v1k2",
+        "name": "proposal_id",
+        "type": "relation",
+        "required": true,
+        "unique": false,
+        "options": {
+          "collectionId": "proposl8s9v1k2m3",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "id": "chanfld8s9v1k2m",
+        "name": "stream_channel_id",
+        "type": "text",
+        "required": true,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "cdelfld8s9v1k2m",
+        "name": "is_deleted",
+        "type": "bool",
+        "required": false,
+        "unique": false,
+        "options": {}
+      }
+    ],
+    "indexes": [],
+    "listRule": "is_deleted = false && @request.auth.id != '' && (proposal_id.freelancer_id = @request.auth.id || proposal_id.client_id = @request.auth.id)",
+    "viewRule": "is_deleted = false && @request.auth.id != '' && (proposal_id.freelancer_id = @request.auth.id || proposal_id.client_id = @request.auth.id)",
+    "createRule": "false",
+    "updateRule": "false",
+    "deleteRule": "false",
+    "options": {}
+  }
+]
+
