@@ -304,6 +304,128 @@
     "updateRule": "false",
     "deleteRule": "false",
     "options": {}
+  },
+  {
+    "id": "paymnt8s9v1k2m3n",
+    "name": "payments",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "pclifld8s9v1k2",
+        "name": "client_id",
+        "type": "relation",
+        "required": true,
+        "unique": false,
+        "options": {
+          "collectionId": "_pb_users_auth_",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "id": "pfrlfld8s9v1k2",
+        "name": "freelancer_id",
+        "type": "relation",
+        "required": true,
+        "unique": false,
+        "options": {
+          "collectionId": "_pb_users_auth_",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "id": "pamtfld8s9v1k2",
+        "name": "amount",
+        "type": "number",
+        "required": true,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
+      },
+      {
+        "id": "pcurfld8s9v1k2",
+        "name": "currency",
+        "type": "text",
+        "required": true,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "psesfld8s9v1k2",
+        "name": "stripe_checkout_session_id",
+        "type": "text",
+        "required": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "ppintfld8s9v1k",
+        "name": "stripe_payment_intent_id",
+        "type": "text",
+        "required": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "pstatfld8s9v1k",
+        "name": "status",
+        "type": "select",
+        "required": true,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "created",
+            "paid",
+            "failed",
+            "refunded"
+          ]
+        }
+      },
+      {
+        "id": "pdelld8s9v1k2",
+        "name": "is_deleted",
+        "type": "bool",
+        "required": false,
+        "unique": false,
+        "options": {}
+      },
+      {
+        "id": "pcrefld8s9v1k",
+        "name": "created_at",
+        "type": "date",
+        "required": true,
+        "unique": false,
+        "options": {}
+      }
+    ],
+    "indexes": [],
+    "listRule": "is_deleted = false && @request.auth.id != '' && (client_id = @request.auth.id || freelancer_id = @request.auth.id)",
+    "viewRule": "is_deleted = false && @request.auth.id != '' && (client_id = @request.auth.id || freelancer_id = @request.auth.id)",
+    "createRule": "false",
+    "updateRule": "false",
+    "deleteRule": "false",
+    "options": {}
   }
 ]
 

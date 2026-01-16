@@ -39,12 +39,25 @@ Purpose: mapping between PocketBase and GetStream
 - is_deleted
 - created
 
+### payments
+- client_id → users
+- freelancer_id → users
+- amount
+- currency
+- stripe_checkout_session_id
+- stripe_payment_intent_id
+- status: `created | paid | failed | refunded`
+- is_deleted
+- created_at
+
 ## Relationships
 - users (client) 1 → many projects
 - projects 1 → many proposals
 - users (freelancer) 1 → many proposals
 - projects 1 → 1 conversations (only after acceptance)
 - proposals 1 → 1 conversations (only after acceptance)
+- users (client) 1 → many payments
+- users (freelancer) 1 → many payments
 
 ## Soft Delete
 - All collections include `is_deleted`

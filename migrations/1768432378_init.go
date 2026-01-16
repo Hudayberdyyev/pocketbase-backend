@@ -244,11 +244,88 @@ func init() {
 			),
 		}
 
-		return dao.SaveCollection(conversations)
+		if err := dao.SaveCollection(conversations); err != nil {
+			return err
+		}
+
+		// -----------------------------
+		// PAYMENTS
+		// -----------------------------
+		payments := &models.Collection{
+			Name:       "payments",
+			Type:       models.CollectionTypeBase,
+			System:     false,
+			CreateRule: strPtr("false"),
+			ListRule:   strPtr("is_deleted = false && @request.auth.id != '' && (client_id = @request.auth.id || freelancer_id = @request.auth.id)"),
+			ViewRule:   strPtr("is_deleted = false && @request.auth.id != '' && (client_id = @request.auth.id || freelancer_id = @request.auth.id)"),
+			UpdateRule: strPtr("false"),
+			DeleteRule: strPtr("false"),
+			Schema: schema.NewSchema(
+				&schema.SchemaField{
+					Name:     "client_id",
+					Type:     schema.FieldTypeRelation,
+					Required: true,
+					Options: &schema.RelationOptions{
+						CollectionId: usersCol.Id,
+						MaxSelect:    &maxSelectOption,
+					},
+				},
+				&schema.SchemaField{
+					Name:     "freelancer_id",
+					Type:     schema.FieldTypeRelation,
+					Required: true,
+					Options: &schema.RelationOptions{
+						CollectionId: usersCol.Id,
+						MaxSelect:    &maxSelectOption,
+					},
+				},
+				&schema.SchemaField{
+					Name:     "amount",
+					Type:     schema.FieldTypeNumber,
+					Required: true,
+				},
+				&schema.SchemaField{
+					Name:     "currency",
+					Type:     schema.FieldTypeText,
+					Required: true,
+				},
+				&schema.SchemaField{
+					Name:     "stripe_checkout_session_id",
+					Type:     schema.FieldTypeText,
+					Required: false,
+				},
+				&schema.SchemaField{
+					Name:     "stripe_payment_intent_id",
+					Type:     schema.FieldTypeText,
+					Required: false,
+				},
+				&schema.SchemaField{
+					Name:     "status",
+					Type:     schema.FieldTypeSelect,
+					Required: true,
+					Options: &schema.SelectOptions{
+						Values:    []string{"created", "paid", "failed", "refunded"},
+						MaxSelect: maxSelectOption,
+					},
+				},
+				&schema.SchemaField{
+					Name: "is_deleted",
+					Type: schema.FieldTypeBool,
+				},
+				&schema.SchemaField{
+					Name:     "created_at",
+					Type:     schema.FieldTypeDate,
+					Required: true,
+				},
+			),
+		}
+
+		return dao.SaveCollection(payments)
 	}, func(db dbx.Builder) error {
 		dao := daos.New(db)
 
 		collections := []string{
+			"payments",
 			"conversations",
 			"proposals",
 			"projects",

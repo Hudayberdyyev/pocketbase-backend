@@ -1,3 +1,4 @@
 bin/
 .env
 pb_data/
+test.sh

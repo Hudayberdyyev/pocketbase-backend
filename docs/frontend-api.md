@@ -162,3 +162,32 @@ Response
 ]
 ```
 
+## Payments (Stripe Checkout)
+
+### Field options
+- `status`: `created | paid | failed | refunded`
+
+### Create checkout session
+POST `/stripe/checkout`
+
+Request
+```json
+{
+  "project_id": "PROJECT_ID",
+  "freelancer_id": "FREELANCER_USER_ID",
+  "amount": 25000,
+  "currency": "usd"
+}
+```
+
+Notes:
+- `amount` is in the smallest currency unit (e.g. cents).
+
+Response
+```json
+{
+  "checkout_url": "https://checkout.stripe.com/...",
+  "payment_id": "PAYMENT_ID"
+}
+```
+

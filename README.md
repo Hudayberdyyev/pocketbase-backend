@@ -14,12 +14,17 @@ A mini freelance marketplace backend built with PocketBase; GetStream Chat is us
 ## Requirements
 - Go 1.22+
 - Stream Chat credentials
+- Stripe credentials (test mode)
 
 ## Environment
 Set in `.env` or shell:
 ```
 STREAM_API_KEY=your_key
 STREAM_API_SECRET=your_secret
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_PLATFORM_FEE_PERCENT=10
+STRIPE_SUCCESS_URL=https://example.com/success
+STRIPE_CANCEL_URL=https://example.com/cancel
 ```
 
 ## Run
@@ -40,6 +45,15 @@ JSON schema export is in `migrations/pb_schema.json` (importable from PocketBase
 
 ## API Docs (Frontend)
 See `docs/frontend-api.md`.
+
+## Payments
+See `docs/payments.md` for flow and test cards.
+
+### Local test flow
+1) Start the server.
+2) Create a checkout session via `/stripe/checkout`.
+3) Complete payment in Stripe Checkout.
+4) Ensure webhook is delivered to `/stripe/webhook`.
 
 ## Chat Flow
 1) Freelancer submits a proposal.
