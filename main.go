@@ -45,6 +45,12 @@ func main() {
 	})
 
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+		diditCfg, err := loadDiditConfig(app)
+		if err != nil {
+			return err
+		}
+		diditClient := NewDiditClient(diditCfg)
+
 		limiterStore := middleware.NewRateLimiterMemoryStoreWithConfig(middleware.RateLimiterMemoryStoreConfig{
 			Rate:      50,
 			Burst:     50,
@@ -174,6 +180,9 @@ func main() {
 				"payment_id":   payment.Id,
 			})
 		}, apis.RequireRecordAuth())
+
+		e.Router.POST("/didit/verify", diditStartVerificationHandler(app, diditClient, diditCfg), apis.RequireRecordAuth())
+		e.Router.POST("/didit/webhook", diditWebhookHandler(app, diditCfg))
 
 		e.Router.POST("/stripe/webhook", func(c echo.Context) error {
 			payload, err := io.ReadAll(c.Request().Body)
