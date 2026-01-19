@@ -1,5 +1,5 @@
 serve:
-	go run ./ serve
+	go run ./ serve --http 0.0.0.0:8090
 
 clean:
 	rm -rf ./pb_data
